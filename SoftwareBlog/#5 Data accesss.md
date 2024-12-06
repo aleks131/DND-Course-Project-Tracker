@@ -158,5 +158,4 @@ var user = await context.Users
 3. **Compile-Time Safety**:
    - LINQ catches errors at compile time, while SQL errors occur at runtime.
 
----
 
