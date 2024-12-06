@@ -1,0 +1,82 @@
+@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Frontend.Services
+@inject NavigationManager Navigation
+@inject IAuthenticationService AuthService
+
+<link href="css/common.css" rel="stylesheet" />
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <header class="top-row px-4">
+            <div class="header-brand">
+                <i class="fas fa-leaf header-icon"></i>
+                <span class="header-title">CE TRACK</span>
+            </div>
+            
+            <div class="header-nav">
+                <AuthorizeView>
+                    <Authorized>
+                        <NavLink href="/dashboard" class="nav-link">
+                            <i class="fas fa-chart-line"></i> Dashboard
+                        </NavLink>
+                        <AuthorizeView Roles="Admin">
+                            <Authorized Context="adminContext">
+                                <NavLink href="/admin/users" class="nav-link">
+                                    <i class="fas fa-users-cog"></i> User Management
+                                </NavLink>
+                            </Authorized>
+                        </AuthorizeView>
+                        <div class="nav-divider"></div>
+                        <button class="nav-link logout-button" @onclick="HandleLogout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavLink href="/login" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </NavLink>
+                        <NavLink href="/register" class="nav-link">
+                            <i class="fas fa-user-plus"></i> Register
+                        </NavLink>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </header>
+
+        <div class="main-content" style="display: flex; flex-direction: column; height: 100vh;">
+            <article class="content px-4" style="flex-grow: 1;">
+                <Microsoft.AspNetCore.Components.Web.ErrorBoundary>
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent>
+                        <div class="error-ui">
+                            <div class="error-ui-content">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Oops! Something went wrong</h3>
+                                <p>An error has occurred. Please try again later or contact support if the problem persists.</p>
+                                <button class="btn btn-primary" @onclick="@(() => Navigation.NavigateTo(Navigation.Uri, forceLoad: true))">
+                                    <i class="fas fa-sync"></i> Reload Page
+                                </button>
+                            </div>
+                        </div>
+                    </ErrorContent>
+                </Microsoft.AspNetCore.Components.Web.ErrorBoundary>
+            </article>
+            <Footer />
+        </div>
+    </main>
+</div>
+
+@code {
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        Navigation.NavigateTo("/login");
+    }
+}

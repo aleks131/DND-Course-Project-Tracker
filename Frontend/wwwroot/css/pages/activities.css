@@ -1,0 +1,391 @@
+.activities-container {
+    padding: var(--spacing-lg);
+    background: var(--background-light);
+    min-height: 100vh;
+}
+
+.page-header {
+    margin-bottom: var(--spacing-xl);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-header h1 {
+    color: var(--text-darker);
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.header-description {
+    color: var(--text-dark);
+    font-size: var(--font-size-lg);
+    margin: 0;
+    font-weight: 500;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+}
+
+.activities-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-header h2 {
+    color: var(--text-darker);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin: 0;
+}
+
+.form-select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--border-color);
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.activity-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.activity-type {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+.activity-type.course {
+    background: var(--primary-gradient);
+}
+
+.activity-type.workshop {
+    background: var(--gradient-2);
+}
+
+.activity-date {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.activity-title {
+    color: var(--text-darker);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0.75rem 0;
+}
+
+.activity-description {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.activity-progress {
+    margin: var(--spacing-md) 0;
+}
+
+.progress-bar {
+    background: var(--background-lighter);
+    border: 1px solid var(--border-color);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress {
+    background: var(--primary-gradient);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: var(--text-dark);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.activity-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+}
+
+.activity-credits {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: var(--font-size-md);
+}
+
+.activity-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-icon:hover {
+    background: var(--background-light);
+    color: var(--primary-dark);
+}
+
+.btn-icon:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.btn-icon.delete {
+    color: var(--danger-color);
+}
+
+.btn-icon.delete:hover {
+    background: var(--danger-lighter);
+    color: var(--danger-dark);
+}
+
+.activity-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+}
+
+.activity-status.completed {
+    color: var(--success-dark);
+}
+
+.activity-status.pending {
+    color: var(--warning-dark);
+}
+
+.progress-section {
+    position: sticky;
+    top: 2rem;
+}
+
+.progress-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.progress-card h2 {
+    color: var(--text-darker);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.overall-progress {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.progress-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(#4f46e5 calc(var(--progress) * 1%), #f1f5f9 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.progress-circle::before {
+    content: '';
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.progress-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1e293b;
+    position: relative;
+    z-index: 1;
+}
+
+.progress-label {
+    color: #64748b;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+}
+
+.checklist {
+    margin-top: 2rem;
+}
+
+.checklist-item {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.checklist-item:hover {
+    background: var(--background-lighter);
+}
+
+.checklist-item.completed {
+    background: var(--success-lighter);
+    border-color: var(--success-light);
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.checklist-item.completed .checkbox {
+    background: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.requirement-details {
+    flex: 1;
+}
+
+.requirement-name {
+    color: var(--text-darker);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.requirement-progress {
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.remaining-credits {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.remaining-credits h3 {
+    color: var(--text-darker);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.remaining-credits p {
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.filter-options select {
+    border: 1.5px solid var(--border-color);
+    color: var(--text-dark);
+    font-weight: 500;
+    background-color: white;
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-section {
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .activities-container {
+        padding: 1rem;
+    }
+
+    .page-header {
+        padding: 1.5rem;
+    }
+
+    .activities-grid {
+        grid-template-columns: 1fr;
+    }
+}

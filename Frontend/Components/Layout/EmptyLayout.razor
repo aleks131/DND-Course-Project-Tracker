@@ -1,0 +1,45 @@
+@inherits LayoutComponentBase
+
+<div class="auth-background">
+    <div class="auth-container">
+        <div class="auth-content">
+            @Body
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-background {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d3748 100%);
+        padding: 1rem;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 1200px;
+        min-height: 600px;
+        display: flex;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .auth-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @@media (max-width: 768px) {
+        .auth-container {
+            min-height: auto;
+        }
+    }
+</style>

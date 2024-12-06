@@ -1,0 +1,43 @@
+@inherits ErrorBoundaryBase
+
+@if (CurrentException is null)
+{
+    @ChildContent
+}
+else
+{
+    @if (ErrorContent is not null)
+    {
+        @ErrorContent(CurrentException)
+    }
+    else
+    {
+        <div class="error-boundary">
+            <h2>An error has occurred.</h2>
+            <p>@CurrentException.Message</p>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public new RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public new RenderFragment<Exception>? ErrorContent { get; set; }
+
+    protected override async Task OnErrorAsync(Exception exception)
+    {
+        await Task.CompletedTask;
+    }
+}
+
+<style>
+    .error-ui {
+        padding: 2rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+</style> 

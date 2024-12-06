@@ -1,0 +1,206 @@
+@page "/register"
+@inject NavigationManager NavigationManager
+@inject IAuthenticationService AuthService
+
+<PageTitle>Register - Carbon Tracker</PageTitle>
+
+<style>
+    .auth-container {
+        color: white;
+    }
+    
+    .auth-brand h1,
+    .auth-brand p,
+    .feature-content h3,
+    .feature-content p,
+    .auth-form-container h2,
+    .auth-form-container p,
+    .form-group label {
+        color: white !important;
+    }
+
+    .auth-form-container a {
+        color: #4CAF50 !important;
+    }
+
+    .auth-form-container a:hover {
+        color: #45a049 !important;
+    }
+</style>
+
+<div class="auth-container register-container">
+    <div class="auth-left">
+        <div class="auth-brand">
+            <div class="logo-container animate-fadeIn">
+            </div>
+            <h1 class="brand-name animate-fadeIn-delay">Carbon Tracker</h1>
+            <p class="brand-tagline animate-fadeIn-delay-2">Join the sustainability movement</p>
+        </div>
+
+        <div class="auth-features">
+            <div class="feature-item animate-slideIn">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Track Your Progress</h3>
+                    <p>Monitor your carbon footprint with detailed analytics</p>
+                </div>
+            </div>
+            <div class="feature-item animate-slideIn-delay">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Eco-friendly Tips</h3>
+                    <p>Get personalized recommendations for a greener lifestyle</p>
+                </div>
+            </div>
+            <div class="feature-item animate-slideIn-delay-2">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Earn Achievements</h3>
+                    <p>Get rewarded for your environmental efforts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-right">
+        <div class="auth-form-container animate-fadeIn">
+            <h2>Create Account</h2>
+            <p class="auth-subtitle">Start your sustainability journey today</p>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger animate-shake">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @errorMessage
+                </div>
+            }
+
+            <EditForm Model="registerModel" OnValidSubmit="HandleRegistration" class="register-form">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="firstName">
+                        <i class="fas fa-user"></i>
+                        First Name
+                    </label>
+                    <InputText id="firstName" class="form-control" @bind-Value="registerModel.FirstName" />
+                    <ValidationMessage For="@(() => registerModel.FirstName)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">
+                        <i class="fas fa-user"></i>
+                        Last Name
+                    </label>
+                    <InputText id="lastName" class="form-control" @bind-Value="registerModel.LastName" />
+                    <ValidationMessage For="@(() => registerModel.LastName)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <InputText id="email" class="form-control" @bind-Value="registerModel.Email" />
+                    <ValidationMessage For="@(() => registerModel.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <InputText type="@(showPassword ? "text" : "password")" 
+                                 id="password" 
+                                 class="form-control" 
+                                 @bind-Value="registerModel.Password" />
+                        <button type="button" 
+                                class="password-toggle" 
+                                @onclick="TogglePasswordVisibility">
+                            <i class="fas @(showPassword ? "fa-eye-slash" : "fa-eye")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.Password)" />
+                    <div class="password-requirements">
+                        <i class="fas fa-info-circle"></i>
+                        Password must be at least 6 characters
+                    </div>
+                </div>
+
+                <div class="terms-group">
+                    <label class="checkbox-label">
+                        <InputCheckbox @bind-Value="acceptedTerms" />
+                        <span>
+                            I agree to the 
+                            <a href="/terms" target="_blank">Terms of Service</a>
+                            and
+                            <a href="/privacy" target="_blank">Privacy Policy</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" 
+                        class="btn btn-primary btn-block btn-glow" 
+                        disabled="@(!acceptedTerms)">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </EditForm>
+
+            <div class="auth-footer">
+                <p>Already have an account?</p>
+                <a href="/login" class="btn btn-outline btn-block">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterModel registerModel = new();
+    private bool showPassword;
+    private bool acceptedTerms;
+    private string? errorMessage;
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private async Task HandleRegistration()
+    {
+        try
+        {
+            if (!acceptedTerms)
+            {
+                errorMessage = "Please accept the Terms of Service and Privacy Policy";
+                return;
+            }
+
+            var success = await AuthService.RegisterAsync(registerModel);
+            if (success)
+            {
+                NavigationManager.NavigateTo("/login?registered=true");
+            }
+            else
+            {
+                errorMessage = "Registration failed. Please try again.";
+                StateHasChanged();
+            }
+        }
+        catch
+        {
+            errorMessage = "An error occurred during registration. Please try again.";
+            StateHasChanged();
+        }
+    }
+}

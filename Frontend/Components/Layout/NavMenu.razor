@@ -1,0 +1,116 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using Frontend.Services
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IAuthenticationService AuthService
+
+<div class="nav-header">
+    <div class="nav-brand">
+        <a class="nav-title" href="">
+            <i class="fas fa-leaf"></i>
+            <span>CE TRACK</span>
+        </a>
+    </div>
+    <button title="Navigation menu" class="nav-toggler" @onclick="ToggleNavMenu">
+        <i class="fas fa-bars"></i>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass nav-menu" @onclick="ToggleNavMenu">
+    <nav class="nav-content">
+        <AuthorizeView>
+            <Authorized Context="mainContext">
+                <div class="nav-user">
+                    <div class="nav-user-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="nav-user-info">
+                        <span class="nav-user-name">@mainContext.User.Identity?.Name</span>
+                        <span class="nav-user-role">@(mainContext.User.IsInRole("Admin") ? "Administrator" : "User")</span>
+                    </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <div class="nav-section">
+            <span class="nav-section-title">MAIN MENU</span>
+            <NavLink class="nav-item" href="" Match="NavLinkMatch.All">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </NavLink>
+            <AuthorizeView>
+                <Authorized Context="menuContext">
+                    <NavLink class="nav-item" href="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </NavLink>
+                    <NavLink class="nav-item" href="reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </NavLink>
+                    <NavLink class="nav-item" href="activities">
+                        <i class="fas fa-tasks"></i>
+                        <span>Activities</span>
+                    </NavLink>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="nav-section">
+                    <span class="nav-section-title">Administration</span>
+                    <NavLink class="nav-item" href="admin/users">
+                        <i class="fas fa-users-cog"></i>
+                        <span>User Management</span>
+                    </NavLink>
+                    <NavLink class="nav-item" href="admin/settings">
+                        <i class="fas fa-cog"></i>
+                        <span>System Settings</span>
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView>
+            <Authorized Context="userContext">
+                <div class="nav-footer">
+                    <button class="nav-item logout-button" @onclick="HandleLogout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div class="nav-section">
+                    <NavLink class="nav-item" href="login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </NavLink>
+                    <NavLink class="nav-item" href="register">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Register</span>
+                    </NavLink>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/", true);
+    }
+}

@@ -1,0 +1,226 @@
+@page "/activities"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>Activities - CE TRACK</PageTitle>
+
+<link href="css/pages/activities.css" rel="stylesheet" />
+
+<div class="activities-container">
+    <div class="page-header">
+        <div class="header-content">
+            <h1>Activities</h1>
+            <p class="header-description">Track and manage your continuing education activities</p>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="activities-section">
+            <div class="section-header">
+                <h2>Your Activities</h2>
+                <div class="filter-options">
+                    <select class="form-select" @bind="selectedFilter">
+                        <option value="all">All Activities</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="activities-grid">
+                @foreach (var activity in FilteredActivities)
+                {
+                    <div class="activity-card">
+                        <div class="activity-status @(activity.IsCompleted ? "completed" : "pending")">
+                            <i class="fas @(activity.IsCompleted ? "fa-check-circle" : "fa-clock")"></i>
+                        </div>
+                        <div class="activity-header">
+                            <span class="activity-type @activity.Type.ToLower()">@activity.Type</span>
+                            <span class="activity-date">@activity.Date.ToShortDateString()</span>
+                        </div>
+                        <h3 class="activity-title">@activity.Title</h3>
+                        <p class="activity-description">@activity.Description</p>
+                        <div class="activity-progress">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: @(activity.Progress)%"></div>
+                            </div>
+                            <span class="progress-text">@activity.Progress%</span>
+                        </div>
+                        <div class="activity-footer">
+                            <span class="activity-credits">@activity.Credits Credits</span>
+                            <div class="activity-actions">
+                                <button class="btn btn-icon" @onclick="() => ToggleComplete(activity)">
+                                    <i class="fas @(activity.IsCompleted ? "fa-times-circle" : "fa-check-circle")"></i>
+                                </button>
+                                <button class="btn btn-icon" @onclick="() => EditActivity(activity)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-icon delete" @onclick="() => DeleteActivity(activity)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-card">
+                <h2>Progress Checklist</h2>
+                <div class="overall-progress">
+                    <div class="progress-circle" style="--progress: @(OverallProgress)">
+                        <span class="progress-value">@OverallProgress%</span>
+                        <span class="progress-label">Complete</span>
+                    </div>
+                </div>
+                <div class="checklist">
+                    @foreach (var requirement in requirements)
+                    {
+                        <div class="checklist-item @(requirement.IsCompleted ? "completed" : "")">
+                            <div class="checkbox" @onclick="() => ToggleRequirement(requirement)">
+                                <i class="fas @(requirement.IsCompleted ? "fa-check" : "")"></i>
+                            </div>
+                            <div class="requirement-details">
+                                <span class="requirement-name">@requirement.Name</span>
+                                <span class="requirement-progress">@requirement.CompletedCredits/@requirement.RequiredCredits credits</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="remaining-credits">
+                    <h3>Credits Needed</h3>
+                    <p>@RemainingCredits credits remaining to complete all requirements</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string selectedFilter = "all";
+    private List<Activity> activities = new List<Activity>
+    {
+        new Activity { 
+            Title = "Medical Conference", 
+            Description = "Annual Medical Innovation Conference", 
+            Type = "Conference", 
+            Date = DateTime.Now.AddDays(-5), 
+            Credits = 10,
+            Progress = 100,
+            IsCompleted = true
+        },
+        new Activity { 
+            Title = "Research Paper", 
+            Description = "Published research on new treatment methods", 
+            Type = "Publication", 
+            Date = DateTime.Now.AddDays(-15), 
+            Credits = 15,
+            Progress = 75,
+            IsCompleted = false
+        },
+        new Activity { 
+            Title = "Workshop", 
+            Description = "Hands-on training workshop", 
+            Type = "Training", 
+            Date = DateTime.Now.AddDays(-2), 
+            Credits = 5,
+            Progress = 50,
+            IsCompleted = false
+        }
+    };
+
+    private List<Requirement> requirements = new List<Requirement>
+    {
+        new Requirement { 
+            Name = "Conferences", 
+            RequiredCredits = 20, 
+            CompletedCredits = 10,
+            IsCompleted = false 
+        },
+        new Requirement { 
+            Name = "Publications", 
+            RequiredCredits = 30, 
+            CompletedCredits = 15,
+            IsCompleted = false 
+        },
+        new Requirement { 
+            Name = "Training Workshops", 
+            RequiredCredits = 15, 
+            CompletedCredits = 5,
+            IsCompleted = false 
+        },
+        new Requirement { 
+            Name = "Online Courses", 
+            RequiredCredits = 10, 
+            CompletedCredits = 10,
+            IsCompleted = true 
+        }
+    };
+
+    private IEnumerable<Activity> FilteredActivities => selectedFilter switch
+    {
+        "pending" => activities.Where(a => !a.IsCompleted),
+        "completed" => activities.Where(a => a.IsCompleted),
+        _ => activities
+    };
+
+    private int OverallProgress => (int)(requirements.Average(r => 
+        (double)r.CompletedCredits / r.RequiredCredits * 100));
+
+    private int RemainingCredits => requirements.Sum(r => 
+        Math.Max(0, r.RequiredCredits - r.CompletedCredits));
+
+    private void AddNewActivity()
+    {
+        // TODO: Implement add new activity logic
+    }
+
+    private void EditActivity(Activity activity)
+    {
+        // TODO: Implement edit activity logic
+    }
+
+    private void DeleteActivity(Activity activity)
+    {
+        activities.Remove(activity);
+        StateHasChanged();
+    }
+
+    private void ToggleComplete(Activity activity)
+    {
+        activity.IsCompleted = !activity.IsCompleted;
+        if (activity.IsCompleted)
+            activity.Progress = 100;
+        StateHasChanged();
+    }
+
+    private void ToggleRequirement(Requirement requirement)
+    {
+        requirement.IsCompleted = !requirement.IsCompleted;
+        if (requirement.IsCompleted)
+            requirement.CompletedCredits = requirement.RequiredCredits;
+        else
+            requirement.CompletedCredits = 0;
+        StateHasChanged();
+    }
+
+    public class Activity
+    {
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public required string Type { get; set; }
+        public DateTime Date { get; set; }
+        public int Credits { get; set; }
+        public int Progress { get; set; }
+        public bool IsCompleted { get; set; }
+    }
+
+    public class Requirement
+    {
+        public required string Name { get; set; }
+        public int RequiredCredits { get; set; }
+        public int CompletedCredits { get; set; }
+        public bool IsCompleted { get; set; }
+    }
+}

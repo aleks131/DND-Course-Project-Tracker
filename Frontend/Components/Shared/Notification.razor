@@ -1,0 +1,64 @@
+@inject NotificationService NotificationService
+@implements IDisposable
+
+<div class="notification-container">
+    @if (isVisible)
+    {
+        <div class="notification @GetNotificationClass() animate-slideDown">
+            <i class="@GetIconClass()"></i>
+            <span>@message</span>
+        </div>
+    }
+</div>
+
+@code {
+    private bool isVisible;
+    private string message = "";
+    private NotificationType type;
+    private Timer? hideTimer;
+
+    protected override void OnInitialized()
+    {
+        NotificationService.OnNotification += ShowNotification;
+    }
+
+    private void ShowNotification(NotificationType notificationType, string notificationMessage)
+    {
+        type = notificationType;
+        message = notificationMessage;
+        isVisible = true;
+        
+        hideTimer?.Dispose();
+        hideTimer = new Timer(async _ =>
+        {
+            isVisible = false;
+            await InvokeAsync(StateHasChanged);
+        }, null, 3000, Timeout.Infinite);
+
+        StateHasChanged();
+    }
+
+    private string GetNotificationClass() => type switch
+    {
+        NotificationType.Success => "success-notification",
+        NotificationType.Error => "error-notification",
+        NotificationType.Warning => "warning-notification",
+        NotificationType.Info => "info-notification",
+        _ => ""
+    };
+
+    private string GetIconClass() => type switch
+    {
+        NotificationType.Success => "fas fa-check-circle",
+        NotificationType.Error => "fas fa-exclamation-circle",
+        NotificationType.Warning => "fas fa-exclamation-triangle",
+        NotificationType.Info => "fas fa-info-circle",
+        _ => ""
+    };
+
+    public void Dispose()
+    {
+        NotificationService.OnNotification -= ShowNotification;
+        hideTimer?.Dispose();
+    }
+}

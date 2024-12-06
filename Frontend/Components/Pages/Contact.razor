@@ -1,0 +1,135 @@
+@page "/contact"
+
+<PageTitle>Contact Us - Carbon Tracker</PageTitle>
+
+<div class="contact-container">
+    <section class="contact-hero">
+        <div class="hero-content animate-fade-in">
+            <h1>Get in Touch</h1>
+            <p>Have questions or suggestions? We'd love to hear from you!</p>
+            <div class="eco-particles">
+                <i class="fas fa-leaf particle"></i>
+                <i class="fas fa-seedling particle"></i>
+                <i class="fas fa-tree particle"></i>
+            </div>
+        </div>
+    </section>
+
+    <div class="contact-content">
+        <div class="contact-info">
+            <div class="contact-card animate-slide-up">
+                <div class="card-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Our Location</h3>
+                <p>123 Eco Street<br />Green City, Earth 12345</p>
+                <div class="card-decoration"></div>
+            </div>
+            <div class="contact-card animate-slide-up" style="animation-delay: 0.2s;">
+                <div class="card-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p>support@carbontracker.com<br />info@carbontracker.com</p>
+                <div class="card-decoration"></div>
+            </div>
+            <div class="contact-card animate-slide-up" style="animation-delay: 0.4s;">
+                <div class="card-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>Call Us</h3>
+                <p>+1 (555) 123-4567<br />Mon-Fri, 9AM-6PM EST</p>
+                <div class="card-decoration"></div>
+            </div>
+        </div>
+
+        <div class="contact-form-container animate-slide-in">
+            <div class="form-header">
+                <div class="form-icon">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <h2>Send us a Message</h2>
+                <p>We'll get back to you as soon as possible</p>
+            </div>
+            
+            <form class="contact-form" @onsubmit="HandleSubmit">
+                <div class="form-group animate-fade-in" style="animation-delay: 0.2s;">
+                    <label for="name">
+                        <i class="fas fa-user"></i>
+                        Name
+                    </label>
+                    <input type="text" id="name" @bind="name" class="form-control" required 
+                           placeholder="Enter your name" />
+                </div>
+                
+                <div class="form-group animate-fade-in" style="animation-delay: 0.4s;">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </label>
+                    <input type="email" id="email" @bind="email" class="form-control" required 
+                           placeholder="Enter your email" />
+                </div>
+                
+                <div class="form-group animate-fade-in" style="animation-delay: 0.6s;">
+                    <label for="subject">
+                        <i class="fas fa-tag"></i>
+                        Subject
+                    </label>
+                    <input type="text" id="subject" @bind="subject" class="form-control" required 
+                           placeholder="What's this about?" />
+                </div>
+                
+                <div class="form-group animate-fade-in" style="animation-delay: 0.8s;">
+                    <label for="message">
+                        <i class="fas fa-comment"></i>
+                        Message
+                    </label>
+                    <textarea id="message" @bind="message" class="form-control" rows="5" required 
+                              placeholder="Tell us what's on your mind..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary animate-pop-in" style="animation-delay: 1s;">
+                    <span>Send Message</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <section class="social-connect">
+        <h2 class="animate-slide-in">Connect With Us</h2>
+        <div class="social-icons">
+            <a href="#" class="social-icon animate-pop-in" style="animation-delay: 0.2s;">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-icon animate-pop-in" style="animation-delay: 0.4s;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-icon animate-pop-in" style="animation-delay: 0.6s;">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-icon animate-pop-in" style="animation-delay: 0.8s;">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+    </section>
+</div>
+
+@code {
+    private string name = "";
+    private string email = "";
+    private string subject = "";
+    private string message = "";
+
+    private async Task HandleSubmit()
+    {
+        await Task.Delay(1); // Add minimal delay to make the method truly async
+        // TODO: Implement form submission logic
+        // For now, we'll just reset the form
+        name = "";
+        email = "";
+        subject = "";
+        message = "";
+    }
+}

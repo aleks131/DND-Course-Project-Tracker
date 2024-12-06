@@ -1,0 +1,145 @@
+@page "/reports"
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Reports - Carbon Emissions</PageTitle>
+
+<link href="css/pages/reports.css" rel="stylesheet" />
+
+<AuthorizeView>
+    <Authorized>
+        <div class="reports-container">
+            <div class="reports-header">
+                <h1>Carbon Emissions Reports</h1>
+                <div class="reports-actions">
+                    <div class="filter-dropdown">
+                        <select @bind="selectedYear" class="year-select">
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <!-- Featured Reports Section -->
+                <div class="featured-reports">
+                    <h2>Featured Reports</h2>
+                    <div class="pdf-cards">
+                        <div class="pdf-card">
+                            <div class="pdf-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="pdf-info">
+                                <h3>Carbon Emissions Report 2023</h3>
+                                <p>Comprehensive analysis of global carbon emissions trends and impacts in 2023</p>
+                                <div class="pdf-metadata">
+                                    <span><i class="fas fa-calendar"></i> October 2023</span>
+                                    <span><i class="fas fa-file-alt"></i> PDF Report</span>
+                                </div>
+                            </div>
+                            <button class="download-btn" @onclick="@(() => DownloadPdf("Carbon-Emissions-Report-2023-10-FINAL.pdf"))">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+
+                        <div class="pdf-card">
+                            <div class="pdf-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="pdf-info">
+                                <h3>World CO2 Emissions Report 2022</h3>
+                                <p>Detailed country-wise analysis of CO2 emissions across all world countries</p>
+                                <div class="pdf-metadata">
+                                    <span><i class="fas fa-calendar"></i> 2022</span>
+                                    <span><i class="fas fa-file-alt"></i> PDF Report</span>
+                                </div>
+                            </div>
+                            <button class="download-btn" @onclick="@(() => DownloadPdf("CO2-emissions-of-all-world-countries-2022-report.pdf"))">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Findings Section -->
+                <div class="key-findings-section">
+                    <h2>Key Findings</h2>
+                    <div class="findings-grid">
+                        <div class="finding-card">
+                            <div class="finding-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Global Emissions Trend</h3>
+                            <p>Analysis of worldwide carbon emission patterns and their environmental impact</p>
+                        </div>
+                        <div class="finding-card">
+                            <div class="finding-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h3>Industrial Impact</h3>
+                            <p>Sector-wise breakdown of carbon emissions and industrial contributions</p>
+                        </div>
+                        <div class="finding-card">
+                            <div class="finding-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3>Sustainability Measures</h3>
+                            <p>Recommended actions and policies for reducing carbon footprint</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Statistics -->
+                <div class="statistics-section">
+                    <h2>Report Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">180+</div>
+                            <div class="stat-label">Countries Analyzed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">50+</div>
+                            <div class="stat-label">Data Sources</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">10+</div>
+                            <div class="stat-label">Years of Data</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="unauthorized-message">
+            <h2>Please log in to access reports</h2>
+            <button class="login-btn" @onclick="NavigateToLogin">Log In</button>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string selectedYear = "2023";
+
+    private void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    private async Task DownloadPdf(string fileName)
+    {
+        try
+        {
+            var fileUrl = $"PDF/{fileName}";
+            await JSRuntime.InvokeVoidAsync("downloadFile", fileUrl);
+        }
+        catch (Exception ex)
+        {
+            // Handle any errors
+            Console.WriteLine($"Error downloading file: {ex.Message}");
+        }
+    }
+}

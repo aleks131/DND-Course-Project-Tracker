@@ -1,0 +1,194 @@
+@* Pages/Login.razor *@
+@page "/login"
+@inject NavigationManager NavigationManager
+@inject IAuthenticationService AuthService
+@inject NotificationService NotificationService
+
+<PageTitle>Login - Carbon Tracker</PageTitle>
+
+<style>
+    .auth-container {
+        color: white;
+    }
+    
+    .auth-brand h1,
+    .auth-brand p,
+    .feature-content h3,
+    .feature-content p,
+    .auth-form-container h2,
+    .auth-form-container p,
+    .form-group label {
+        color: white !important;
+    }
+
+    .auth-form-container a {
+        color: #4CAF50 !important;
+    }
+
+    .auth-form-container a:hover {
+        color: #45a049 !important;
+    }
+</style>
+
+<div class="auth-container login-container">
+    <div class="auth-left">
+        <div class="auth-brand">
+            <div class="logo-container animate-fadeIn">
+                <i class="fas fa-leaf brand-icon"></i>
+            </div>
+            <h1 class="brand-name animate-fadeIn-delay">Carbon Tracker</h1>
+            <p class="brand-tagline animate-fadeIn-delay-2">Welcome back to your eco-journey</p>
+        </div>
+
+        <div class="auth-features">
+            <div class="feature-item animate-slideIn">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>View Your Impact</h3>
+                    <p>Check your environmental progress and achievements</p>
+                </div>
+            </div>
+            <div class="feature-item animate-slideIn-delay">
+                <div class="feature-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Set New Goals</h3>
+                    <p>Continue working towards your sustainability targets</p>
+                </div>
+            </div>
+            <div class="feature-item animate-slideIn-delay-2">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Join Community</h3>
+                    <p>Connect with other eco-conscious individuals</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-right">
+        <div class="auth-form-container animate-fadeIn">
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger animate-shake">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @errorMessage
+                </div>
+            }
+
+            <h2>Welcome Back</h2>
+            <p class="auth-subtitle">Sign in to continue your journey</p>
+
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin" class="login-form">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <InputText id="email" class="form-control" @bind-Value="loginModel.Email" />
+                    <ValidationMessage For="@(() => loginModel.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <InputText type="@(showPassword ? "text" : "password")" 
+                                 id="password" 
+                                 class="form-control" 
+                                 @bind-Value="loginModel.Password" />
+                        <button type="button" 
+                                class="password-toggle" 
+                                @onclick="TogglePasswordVisibility">
+                            <i class="fas @(showPassword ? "fa-eye-slash" : "fa-eye")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Password)" />
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <InputCheckbox id="remember" @bind-Value="loginModel.RememberMe" />
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span>
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </span>
+                    }
+                </button>
+            </EditForm>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="/register">Create one now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private bool showPassword;
+    private bool isLoading;
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            var result = await AuthService.LoginAsync(loginModel.Email, loginModel.Password);
+            if (!string.IsNullOrEmpty(result?.Token))
+            {
+                NotificationService.Show(NotificationType.Success, "Login successful! Welcome back.");
+                await Task.Delay(1000); // Brief delay to show the notification
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Login failed. Please check your credentials and try again.";
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage = "An unexpected error occurred. Please try again.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private void NavigateToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+}

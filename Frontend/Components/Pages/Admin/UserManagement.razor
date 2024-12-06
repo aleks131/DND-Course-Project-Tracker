@@ -1,0 +1,269 @@
+@page "/admin/users"
+@attribute [Authorize(Roles = "Admin")]
+@using global::Shared.Models
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using System.Net.Http.Json
+@inject IUserService UserService
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavigationManager
+@inject NotificationService NotificationService
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>User Management</h1>
+        <div class="admin-actions">
+            <button class="btn btn-primary" @onclick="NavigateToCreateAdmin">
+                <i class="fas fa-user-plus"></i> Create Admin
+            </button>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" 
+                       placeholder="Search users..." 
+                       @bind-value="_searchTerm" 
+                       @bind-value:event="oninput"
+                       @onkeyup="HandleSearch" />
+            </div>
+            <div class="filter-box">
+                <select @bind="_selectedRole">
+                    <option value="">All Roles</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="User">User</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        @if (_loading)
+        {
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading users...</p>
+            </div>
+        }
+        else if (_users.Count == 0)
+        {
+            <div class="empty-state">
+                <i class="fas fa-users"></i>
+                <p>No users found</p>
+            </div>
+        }
+        else
+        {
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th-content" @onclick="() => SortUsers(nameof(UserDto.Email))">
+                                Email
+                                <i class="fas fa-sort"></i>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-content" @onclick="() => SortUsers(nameof(UserDto.Username))">
+                                Name
+                                <i class="fas fa-sort"></i>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-content" @onclick="() => SortUsers(nameof(UserDto.Role))">
+                                Role
+                                <i class="fas fa-sort"></i>
+                            </div>
+                        </th>
+                        <th>Last Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _filteredUsers)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td>@user.Username</td>
+                            <td>
+                                <span class="role-badge @GetRoleBadgeClass(user.Role)">
+                                    @user.Role
+                                </span>
+                            </td>
+                            <td>@user.LastActive?.ToLocalTime().ToString("g")</td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (user.Role != "Admin" || _currentUser?.Role == "Admin")
+                                    {
+                                        <button class="btn-icon delete" @onclick="() => DeleteUser(user)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@if (_showDeleteConfirmation)
+{
+    <div class="modal-backdrop" @onclick="CancelDelete"></div>
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Delete User</h3>
+            <p>Are you sure you want to delete @_selectedUser?.Email?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<UserDto> _users = new();
+    private List<UserDto> _filteredUsers => FilterUsers();
+    private bool _loading = true;
+    private string _searchTerm = "";
+    private string _selectedRole = "";
+    private string _sortField = "";
+    private bool _sortAscending = true;
+    private bool _showDeleteConfirmation;
+    private UserDto? _selectedUser;
+    private UserDto? _currentUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _currentUser = await AuthService.GetCurrentUser();
+            await LoadUsers();
+        }
+        catch (Exception ex)
+        {
+            NotificationService.Show(NotificationType.Error, $"Error loading users: {ex.Message}");
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task LoadUsers()
+    {
+        try
+        {
+            _loading = true;
+            _users = await UserService.GetAllUsers();
+        }
+        catch (Exception ex)
+        {
+            NotificationService.Show(NotificationType.Error, $"Error loading users: {ex.Message}");
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private List<UserDto> FilterUsers()
+    {
+        var filtered = _users.Where(u => 
+            (string.IsNullOrEmpty(_searchTerm) || 
+             u.Username.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             u.Email.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(_selectedRole) || u.Role == _selectedRole)
+        ).ToList();
+
+        return SortUsers(filtered);
+    }
+
+    private List<UserDto> SortUsers(List<UserDto> users)
+    {
+        return _sortField switch
+        {
+            nameof(UserDto.Email) => _sortAscending 
+                ? users.OrderBy(u => u.Email).ToList()
+                : users.OrderByDescending(u => u.Email).ToList(),
+            nameof(UserDto.Username) => _sortAscending
+                ? users.OrderBy(u => u.Username).ToList()
+                : users.OrderByDescending(u => u.Username).ToList(),
+            nameof(UserDto.Role) => _sortAscending
+                ? users.OrderBy(u => u.Role).ToList()
+                : users.OrderByDescending(u => u.Role).ToList(),
+            _ => users
+        };
+    }
+
+    private void SortUsers(string field)
+    {
+        if (_sortField == field)
+        {
+            _sortAscending = !_sortAscending;
+        }
+        else
+        {
+            _sortField = field;
+            _sortAscending = true;
+        }
+
+        _users = SortUsers(_users);
+    }
+
+    private string GetRoleBadgeClass(string role)
+    {
+        return role.ToLower() switch
+        {
+            "admin" => "admin",
+            "manager" => "manager",
+            _ => "user"
+        };
+    }
+
+    private void NavigateToCreateAdmin()
+    {
+        NavigationManager.NavigateTo("/admin/users/create-admin");
+    }
+
+    private async Task HandleSearch()
+    {
+        await Task.Delay(300); // Debounce search
+        StateHasChanged();
+    }
+
+    private void DeleteUser(UserDto user)
+    {
+        _selectedUser = user;
+        _showDeleteConfirmation = true;
+    }
+
+    private void CancelDelete()
+    {
+        _showDeleteConfirmation = false;
+        _selectedUser = null;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (_selectedUser?.Id == null) return;
+
+        try
+        {
+            await UserService.DeleteUser(_selectedUser.Id);
+            NotificationService.Show(NotificationType.Success, "User deleted successfully");
+            await LoadUsers();
+        }
+        catch (Exception ex)
+        {
+            NotificationService.Show(NotificationType.Error, $"Error deleting user: {ex.Message}");
+        }
+        finally
+        {
+            _showDeleteConfirmation = false;
+            _selectedUser = null;
+        }
+    }
+}

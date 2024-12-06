@@ -1,0 +1,83 @@
+@page "/admin/users/create-admin"
+@using System.ComponentModel.DataAnnotations
+@using Frontend.Services
+@using global::Shared.Models
+@using global::Shared.Responses
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavigationManager
+@inject INotificationService NotificationService
+
+<div class="admin-create-container">
+    <div class="admin-create-header">
+        <h1>Create Admin Account</h1>
+    </div>
+
+    <EditForm Model="@_adminModel" OnValidSubmit="HandleValidSubmit" class="admin-create-form">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <InputText id="email" @bind-Value="_adminModel.Email" class="form-control" />
+            <ValidationMessage For="@(() => _adminModel.Email)" />
+        </div>
+
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <InputText id="firstName" @bind-Value="_adminModel.FirstName" class="form-control" />
+            <ValidationMessage For="@(() => _adminModel.FirstName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <InputText id="lastName" @bind-Value="_adminModel.LastName" class="form-control" />
+            <ValidationMessage For="@(() => _adminModel.LastName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText type="password" id="password" @bind-Value="_adminModel.Password" class="form-control" />
+            <ValidationMessage For="@(() => _adminModel.Password)" />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <InputText type="password" id="confirmPassword" @bind-Value="_adminModel.ConfirmPassword" class="form-control" />
+            <ValidationMessage For="@(() => _adminModel.ConfirmPassword)" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Admin</button>
+            <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Cancel</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private CreateAdminModel _adminModel = new();
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var result = await AuthService.RegisterAdminAsync(_adminModel);
+            if (result.Success)
+            {
+                NotificationService.ShowSuccess("Admin account created successfully!");
+                NavigateBack();
+            }
+            else
+            {
+                NotificationService.ShowError(result.Message ?? "Failed to create admin account.");
+            }
+        }
+        catch (Exception ex)
+        {
+            NotificationService.ShowError($"Error: {ex.Message}");
+        }
+    }
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/admin/users");
+    }
+}

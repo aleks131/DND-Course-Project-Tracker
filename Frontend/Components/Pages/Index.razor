@@ -1,0 +1,192 @@
+@using Microsoft.AspNetCore.Authorization
+@page "/"
+@attribute [AllowAnonymous]
+
+<style>
+    .index-container {
+        background: var(--background-light);
+        min-height: 100vh;
+        padding: var(--spacing-xl);
+    }
+
+    .hero-section {
+        text-align: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .hero-title {
+        color: var(--text-dark);
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .hero-subtitle {
+        color: var(--text-muted);
+        font-size: var(--font-size-xl);
+        line-height: 1.6;
+        max-width: 700px;
+        margin: 0 auto var(--spacing-xl);
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-xl);
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .feature-card {
+        background: var(--glass-bg);
+        border-radius: 1rem;
+        padding: var(--spacing-xl);
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .feature-title {
+        color: var(--text-dark);
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .feature-description {
+        color: var(--text-muted);
+        font-size: var(--font-size-md);
+        line-height: 1.6;
+    }
+
+    .cta-section {
+        text-align: center;
+        padding: var(--spacing-2xl) 0;
+        background: var(--glass-bg);
+        border-radius: 1rem;
+        border: 1px solid var(--border-color);
+        margin: var(--spacing-2xl) 0;
+    }
+
+    .cta-title {
+        color: var(--text-dark);
+        font-size: var(--font-size-2xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .cta-description {
+        color: var(--text-muted);
+        font-size: var(--font-size-lg);
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto var(--spacing-xl);
+    }
+
+    .cta-button {
+        background: var(--primary-gradient);
+        color: var(--text-light);
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-size: var(--font-size-md);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: opacity 0.2s ease;
+    }
+
+    .cta-button:hover {
+        opacity: 0.9;
+    }
+
+    .stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-xl);
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .stat-card {
+        background: var(--glass-bg);
+        border-radius: 1rem;
+        padding: var(--spacing-lg);
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .stat-value {
+        color: var(--text-dark);
+        font-size: var(--font-size-2xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: var(--font-size-md);
+        font-weight: 500;
+    }
+</style>
+
+<PageTitle>Home - Carbon Tracker</PageTitle>
+
+<div class="index-container">
+    <section class="hero-section">
+        <h1 class="hero-title">Make Every Action Count for Our Planet</h1>
+        <p class="hero-subtitle">Track, reduce, and offset your carbon footprint with our innovative platform</p>
+        
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value">10K+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">50K+</div>
+                <div class="stat-label">Trees Saved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100K+</div>
+                <div class="stat-label">CO₂ Reduced</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-grid">
+        <div class="feature-card">
+            <i class="fas fa-chart-line feature-icon"></i>
+            <h3 class="feature-title">Real-time Tracking</h3>
+            <p class="feature-description">Monitor your environmental impact with detailed analytics and insights</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-lightbulb feature-icon"></i>
+            <h3 class="feature-title">Smart Recommendations</h3>
+            <p class="feature-description">Get AI-powered suggestions to reduce your carbon footprint</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-users feature-icon"></i>
+            <h3 class="feature-title">Global Community</h3>
+            <p class="feature-description">Connect with eco-conscious individuals worldwide</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-award feature-icon"></i>
+            <h3 class="feature-title">Rewards Program</h3>
+            <p class="feature-description">Earn points and badges for your environmental achievements</p>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to Make a Difference?</h2>
+        <p class="cta-description">Join our global community and start your journey towards a sustainable future today.</p>
+        <a href="/register" class="cta-button">Get Started Free</a>
+    </section>
+</div>
+
+@code {
+}

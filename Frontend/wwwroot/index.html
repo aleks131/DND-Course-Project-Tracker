@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track and reduce your carbon footprint with CE TRACK. Calculate your impact and learn how to make a difference." />
+    <meta name="theme-color" content="#10B981" />
+    <title>CE TRACK - Track Your Carbon Footprint</title>
+    <base href="/" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <!-- App Styles -->
+    <link href="css/design-system.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/nav-menu.css" rel="stylesheet" />
+    <link href="Frontend.styles.css" rel="stylesheet" />
+    
+    <!-- Page-specific styles -->
+    <link href="css/pages/contact.css" rel="stylesheet" />
+    <link href="css/pages/learn-more.css" rel="stylesheet" />
+    
+    <!-- Layout Styles -->
+    <link rel="stylesheet" href="css/layout/layout.css" />
+    <link rel="stylesheet" href="css/shared/footer.css" />
+    
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+    <div id="app">
+        <div class="loading">
+            <div class="loading-content">
+                <i class="fas fa-leaf fa-spin"></i>
+                <span>Loading CE TRACK...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gradient"></div>
+    <div class="particles" id="particles"></div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 3 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                particle.style.animationDelay = (Math.random() * 20) + 's';
+                container.appendChild(particle);
+            }
+        }
+        window.addEventListener('load', createParticles);
+    </script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
