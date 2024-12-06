@@ -1,9 +1,5 @@
-Here’s the updated version with a **short conclusion**:
-
----
 
 # **Project Conclusion & Demonstration**
-
 
 ### **Work Completed to Finalize the Project**
 1. **Emissions Statistics**:
@@ -55,14 +51,11 @@ This project achieves its goals of empowering users with tools to make sustainab
 
 ## **Video Demonstration**
 
-[**Watch the Video Demonstration**](#)
-
-
+[**Watch the Video Demonstration**](https://youtu.be/qKWPw7x86Ck?si=I2rN-2KN8P4-EsyT)
 
 ---
-
-
 
 ## **Conclusion**
 
 The **Carbon Tracker** project effectively addresses its primary goal of helping users understand and reduce their CO₂ emissions. Through a combination of robust backend services, a user-friendly frontend, and actionable insights, the application empowers users to make environmentally conscious decisions. With future scalability and enhancements in mind, this project is a solid foundation for promoting sustainability in a digital age.
+
