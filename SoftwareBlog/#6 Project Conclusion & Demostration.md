@@ -58,7 +58,7 @@ This project achieves its goals of empowering users with tools to make sustainab
 
 [**Watch the Video Demonstration**](#)
 
-> Note: Replace the `#` above with the actual URL of the demonstration video hosted on a platform like YouTube.
+
 
 ---
 
