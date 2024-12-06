@@ -3,9 +3,7 @@
 * Miguel_Espinosa_Gonzalez(316134) 
 * Aleks_Aleksandrov(316112)
 
-Here’s a balanced table showing Aleks as the lead but with significant contributions from Miguel and Jorge:
 
----
 
 ### **Task Distribution Table**
 
@@ -21,9 +19,14 @@ Here’s a balanced table showing Aleks as the lead but with significant contrib
 | **Eco-Friendly Tips Feature**                 | ✅ Designed logic for displaying tips dynamically.    | ✅ Integrated tips into the dashboard UI.       | ✅ Populated tips data and styled the display.   |
 | **Testing and Debugging**                     | ✅ Conducted system-wide testing for bugs.            | ✅ Focused on backend service and API endpoint testing. | ✅ Focused on frontend and user experience testing. |
 | **Documentation and ReadMe**                  | ✅ Wrote most sections, including backend details.    | ✅ Documented API design and integration.       | ✅ Contributed frontend and user interaction details. |
-| **Final Presentation and Video**              | ✅ Prepared slides and wrote the script.             | ✅ Recorded the demonstration video.            | ✅ Edited and finalized the video for upload.    |
+| **Final Presentation and Video**              | ✅ Collaborated on slides, script, and video recording/editing. | ✅ Collaborated on slides, script, and video recording/editing. | ✅ Collaborated on slides, script, and video recording/editing. |
 
 ---
+
+### **Final Notes**
+
+This project was a collaborative effort. While individual members took the lead on specific tasks, we supported each other throughout the development process. From brainstorming ideas to debugging, testing, and preparing the final presentation, the team worked closely to ensure a successful outcome.
+By working together, we ensured that our application is a robust and user-friendly tool for tracking and reducing CO₂ emissions.
 
 ### **Notes**
 - **Aleks**: Took the lead role, working across all tasks to ensure the project’s success.
