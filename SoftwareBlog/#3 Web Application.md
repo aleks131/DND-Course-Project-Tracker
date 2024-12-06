@@ -126,6 +126,7 @@ The application consists of the following key pages:
 | **Dashboard**            | `/dashboard`    | Displays user-specific statistics, trends, recent activities, and eco-tips.                      |
 | **Login Page**           | `/login`        | Allows users to securely log into their accounts.                                                 |
 | **Registration Page**    | `/register`     | Enables new users to create an account to start tracking their carbon footprint.                 |
+| **Registration Page**    | `/reports`     | Provides an option to generate and download emissions reports for a selected date range              |
 
 ---
 
