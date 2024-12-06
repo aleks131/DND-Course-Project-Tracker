@@ -4,7 +4,6 @@ Here’s the updated version with a **short conclusion**:
 
 # **Project Conclusion & Demonstration**
 
-## **Final Development Update**
 
 ### **Work Completed to Finalize the Project**
 1. **Emissions Statistics**:
