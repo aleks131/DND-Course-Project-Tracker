@@ -1,70 +1,34 @@
-# Carbon Tracker
+# DND-Course-Project-Tracker
+* Jorge_Catala_Manglano(316139) 
+* Miguel_Espinosa_Gonzalez(316134) 
+* Aleks_Aleksandrov(316112)
 
-A web application for tracking and reducing your carbon footprint, built with .NET and Blazor.
 
-## Features
 
-- User Registration and Authentication
-- Carbon Footprint Tracking
-- Detailed Analytics and Reports
-- Personalized Eco-friendly Tips
-- Achievement System
+### **Task Distribution Table**
 
-## Tech Stack
+| **Task**                                      | **Aleks**                     | **Miguel**                 | **Jorge**                  |
+|-----------------------------------------------|--------------------------------|----------------------------|----------------------------|
+| **Project Planning and Requirements Analysis** | ✅ Defined project goals, requirements, and features. | ✅ Assisted in finalizing requirements and feature planning. | ✅ Contributed ideas for frontend and user experience. |
+| **Backend Development: API Design**           | ✅ Designed core API structure and endpoints.         | ✅ Implemented API for statistics and reports. | ✅ Tested API endpoints for edge cases and bugs. |
+| **Backend Development: Business Logic**       | ✅ Developed `StatisticsService` logic.               | ✅ Developed `ReportService` for CSV generation. | ✅ Assisted with emissions grouping logic.       |
+| **Frontend Development: Dashboard UI**        | ✅ Designed the dashboard layout and components.      | ✅ Integrated statistics and charts into the dashboard. | ✅ Styled the UI and added interactivity.        |
+| **Frontend Development: Authentication**      | ✅ Implemented JWT login and registration.            | ✅ Connected authentication to the frontend.    | ✅ Validated user inputs and handled error messages. |
+| **Database Design and Setup**                 | ✅ Designed schema and implemented migrations.        | ✅ Seeded test data for roles and emissions.    | ✅ Conducted tests to validate schema integrity. |
+| **File Storage for Reports**                  | ✅ Designed the CSV report structure and format.      | ✅ Implemented backend logic for generating reports. | ✅ Tested file download functionality on the frontend. |
+| **Eco-Friendly Tips Feature**                 | ✅ Designed logic for displaying tips dynamically.    | ✅ Integrated tips into the dashboard UI.       | ✅ Populated tips data and styled the display.   |
+| **Testing and Debugging**                     | ✅ Conducted system-wide testing for bugs.            | ✅ Focused on backend service and API endpoint testing. | ✅ Focused on frontend and user experience testing. |
+| **Documentation and ReadMe**                  | ✅ Wrote most sections, including backend details.    | ✅ Documented API design and integration.       | ✅ Contributed frontend and user interaction details. |
+| **Final Presentation and Video**              | ✅ Collaborated on slides, script, and video recording/editing. | ✅ Collaborated on slides, script, and video recording/editing. | ✅ Collaborated on slides, script, and video recording/editing. |
 
-- Backend: .NET 9.0
-- Frontend: Blazor WebAssembly
-- Database: SQLite
-- Authentication: JWT
+---
 
-## Getting Started
+### **Final Notes**
 
-### Prerequisites
+This project was a collaborative effort. While individual members took the lead on specific tasks, we supported each other throughout the development process. From brainstorming ideas to debugging, testing, and preparing the final presentation, the team worked closely to ensure a successful outcome.
+By working together, we ensured that our application is a robust and user-friendly tool for tracking and reducing CO₂ emissions.
 
-- .NET 9.0 SDK
-- Visual Studio 2022 or VS Code
-
-### Installation
-
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/DND-CarbonTrack.git
-```
-
-2. Navigate to the project directory
-```bash
-cd DND-CarbonTrack
-```
-
-3. Restore dependencies
-```bash
-dotnet restore
-```
-
-4. Build the project
-```bash
-dotnet build
-```
-
-5. Run the application
-```bash
-dotnet run --project Backend
-```
-
-## Project Structure
-
-- `Backend/`: ASP.NET Core Web API
-- `Frontend/`: Blazor WebAssembly Client
-- `Shared/`: Shared Models and DTOs
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+### **Notes**
+- **Aleks**: Took the lead role, working across all tasks to ensure the project’s success.
+- **Miguel**: Focused on backend development and frontend integration, contributing significantly to implementation and testing.
+- **Jorge**: Played a key role in frontend design, user experience, and testing, ensuring the UI was intuitive and visually appealing.
